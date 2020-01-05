@@ -1,0 +1,15 @@
+<h1>Summary Statistics</h1>
+
+<h2>Total Sales: <%= @checkouts.sum("amount") %></h2>
+
+<h2>Average Sale: <%= @checkouts.average("amount") %></h2>
+
+<h1>All Checkouts</h1>
+
+<ul id="checkouts">
+  <% @checkouts.each do |checkout| %>
+    <li>
+      <%= link_to checkout.id, checkout_path(checkout) %>
+    </li>
+  <% end %>
+</ul>

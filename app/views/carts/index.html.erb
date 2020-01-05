@@ -1,0 +1,15 @@
+<h1>Summary Statistics</h1>
+
+<h2>Total Selected in Carts: <%= @carts.sum("amount") %></h2>
+
+<h2>Average Cart: <%= @carts.average("amount") %></h2>
+
+<h1>All Carts</h1>
+
+<ul id="carts">
+  <% @carts.each do |cart| %>
+    <li>
+      <%= link_to cart.id, cart_path(cart) %>
+    </li>
+  <% end %>
+</ul>
