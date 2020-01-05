@@ -4,6 +4,7 @@ class CartsController < ApplicationController
 
   def index
     @carts = Cart.all
+    @checkouts = Checkout.all
   end
 
   def show

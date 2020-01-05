@@ -2,7 +2,13 @@
 
 <h2>Total Selected in Carts: <%= @carts.sum("amount") %></h2>
 
-<h2>Average Cart: <%= @carts.average("amount") %></h2>
+<h2>Total Purchased: <%= @checkouts.sum("amount") %></h2>
+
+<h2>Cart Conversion Rate: <%= (@checkouts.length.to_f / @carts.length.to_f * 100).round(2) %>%</h2>
+
+<h2>Average Cart: <%= @carts.average("amount").round(2) %></h2>
+
+<h2>Average Purchased: <%= @checkouts.average("amount").round(2) %></h2>
 
 <h1>All Carts</h1>
 

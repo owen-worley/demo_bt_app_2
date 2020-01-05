@@ -2,8 +2,8 @@
       <div id="main_container">
         <div id="title">Braintree Payments</div>
         <div id='form_container'>
-          <!--action = end point/destination-->
-          <form action="/checkouts" id="hosted-fields-form" method="post">
+
+          <form action="/carts/<%= @cart.id %>/checkouts" id="hosted-fields-form" method="post">
                 <label for="card-number">Card Number</label>
                 <div id="card-number" class='hosted-field'></div>
 
@@ -24,6 +24,8 @@
 
                 <input type="submit" value="Pay" disabled />
                 <input name='payment_method_nonce' id= 'payment_method_nonce' hidden >
+                <input name='amount' id= 'amount' value="<%= @cart.amount %>" hidden >
+                <input name='cart_id' id= 'cart_id' value="<%= @cart.id %>" hidden >
                 <input name='card_type' id= 'card_type' hidden >
                 <input name='data-collector' id= 'data-collector' hidden >
                 <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">

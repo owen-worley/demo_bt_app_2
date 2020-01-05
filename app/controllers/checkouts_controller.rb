@@ -2,28 +2,6 @@ class CheckoutsController < ApplicationController
   require 'rubygems'
   require 'braintree'
 
-  def index
-    @checkouts = Checkout.all
-  end
-
-  def show
-    @checkout = Checkout.find(params[:id])
-  end
-
-#perhaps the below format will come in handy for something else...
-
-#  def total_sales
-#    total = 0
-#    @checkouts.each do |checkout|
-#      if checkout.amount.is_a?(Numeric)
-#        total += checkout.amount
-#      end
-#    end
-#    return total
-#  end
-#  helper_method :total_sales
-
-
   def transaction(gateway, amount, customer_id, postal_code, sfs_bool)
     gateway.transaction.sale(
       amount: amount,
@@ -56,15 +34,14 @@ class CheckoutsController < ApplicationController
     if cardtype == "Visa"
       customer_result = vault(gateway, params[:payment_method_nonce], params[:first_name], params[:email])
       customer_id = customer_result.customer.id
-      transaction_result = transaction(gateway, @cart.amount, customer_id, params[:postal_code], true)
+      transaction_result = transaction(gateway, params[:amount], customer_id, params[:postal_code], true)
       @message = transaction_result.success?
-      @checkout = Checkout.new
-      @checkout.cart_id = @cart.id
+      @checkout = Cart.find(params[:cart_id]).checkouts.new
       @checkout.email = params[:email]
       @checkout.first_name = params[:first_name]
       @checkout.customer_id = customer_id
       @checkout.postal_code = params[:postal_code]
-      @checkout.amount = @cart.amount
+      @checkout.amount = params[:amount]
       @checkout.card_type = params[:card_type]
       @checkout.save
 #      redirect_to checkout_path(@checkout)
