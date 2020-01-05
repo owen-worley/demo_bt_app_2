@@ -6,9 +6,9 @@
           <form action="/carts" id="hosted-fields-form" method="post">
 
                 <label for='amount'>Select Amount</label><br>
-                <input type='number' name='amount' class='hosted-field' id='amount'><br>
+                <input type='number' name='amount' class='hosted-field' id='amount' required><br>
 <!-- add the word disabled after "Checkout" below to start button disabled-->
-                <input type="submit" value="Check Out" />
+                <input type="submit" value="Check Out" disabled />
                 <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
               </form>
 
@@ -16,10 +16,30 @@
       </div>
   </div>
 
-<!--  <script>
+<script>
 
-//      var form = document.querySelector('#hosted-fields-form');
-//      var submit = document.querySelector('input[type="submit"]');
+  var field = document.querySelector('input[type="number"]');
+  var submit = document.querySelector('input[type="submit"]');
+  var form = document.querySelector('#hosted-fields-form');
+
+  field.addEventListener("input", () => {
+    submit.removeAttribute('disabled');
+  });
+
+  field.placeholder = 'Purchase Amount';
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    console.log(event);
+
+    if (field.value > 0) {
+      form.submit;
+    }
+    else {
+      alert("Hey, I'm trying to make some money here! Please enter a positive amount.")
+    }
+  });
+
 
 //need an action to enable submit button. "on amount=exists" essentially
 //          submit.removeAttribute('disabled');
@@ -31,5 +51,4 @@
 
 //              form.submit();
 
-            });
-</script> -->
+</script>
