@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_05_172931) do
+ActiveRecord::Schema.define(version: 2020_01_11_053447) do
 
   create_table "carts", force: :cascade do |t|
     t.decimal "amount"
@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(version: 2020_01_05_172931) do
     t.integer "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "last_name"
+    t.string "transaction_id"
+    t.string "verification_id"
+    t.boolean "transaction_success"
+    t.boolean "verification_success"
+    t.string "transaction_result"
+    t.string "verification_result"
     t.index ["cart_id"], name: "index_checkouts_on_cart_id"
   end
 

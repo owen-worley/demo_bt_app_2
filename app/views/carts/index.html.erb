@@ -1,21 +1,25 @@
 <h1>Summary Statistics</h1>
 
-<h2>Total Selected in Carts: <%= @carts.sum("amount") %></h2>
+<!--Using Money gem to ensure correct formatting for currency amounts-->
+<h2>Total Selected in Carts: <%= Money.from_amount(@carts.sum("amount"), "USD").format %></h2>
 
-<h2>Total Purchased: <%= @checkouts.sum("amount") %></h2>
+<!--Note that, because the amount isn't stored in "checkouts" until the txn is successful, the below is only summing the amounts of those successful txns.-->
+<h2>Total Successfully Purchased: <%= Money.from_amount(@checkouts.sum("amount"), "USD").format %></h2>
 
-<h2>Cart Conversion Rate: <%= (@checkouts.length.to_f / @carts.length.to_f * 100).round(2) %>%</h2>
+<!--Number of successful transactions divided by total number of times an amount submitted on the "Cart" page-->
+<h2>Cart Conversion Rate: <%= (@successfulCheckouts.length.to_f / @carts.length.to_f * 100).round(2) %>%</h2>
 
-<h2>Average Cart: <%= @carts.average("amount").round(2) %></h2>
+<h2>Average Amount Selected in Cart: <%= Money.from_amount(@carts.average("amount").round(2), "USD").format %></h2>
 
-<h2>Average Purchased: <%= @checkouts.average("amount").round(2) %></h2>
+<h2>Average Completed Purchase: <%= Money.from_amount(@checkouts.average("amount").round(2), "USD").format %></h2>
 
-<h1>All Carts</h1>
+<h1>All Checkouts</h1>
 
-<ul id="carts">
-  <% @carts.each do |cart| %>
+<!--Links to each checkout, labelled by submitted customer email address-->
+<ul id="checkouts">
+  <% @checkouts.each do |checkout| %>
     <li>
-      <%= link_to cart.id, cart_path(cart) %>
+      <%= link_to checkout.email, cart_path(checkout.cart_id) %>
     </li>
   <% end %>
 </ul>

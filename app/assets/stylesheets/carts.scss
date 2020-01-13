@@ -1,10 +1,18 @@
-// Place all the styles related to the Welcome controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-#form_container{
-  display: flex;
+//Note that other styles are inherited from welcome.scss
+
+#cart-submit:hover {
+  transform: scale(1.11);
 }
 
+#cart_container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  height: 790px;
+  border: 2px solid black;
+}
 
 .hosted-field {
   border: 1px solid black;
@@ -12,71 +20,22 @@
   width: 300px;
   margin-bottom:25px;
   padding-left:10px;
+  display: block;
 }
 
-
-label {
-  color:blue;
+.hosted-field:hover {
+  transform: scale(1.02);
 }
 
-/* Meta Styling */
-
-@font-face {
-    font-family: btMono;
-    src: url('/assets/fonts/bt_mono_regular-webfont.ttf');
+.regular-field {
+  border: 1px solid black;
+  height: 40px;
+  width: 300px;
+  margin-bottom: 0px;
+  padding-left:10px;
+  display: block;
 }
 
-html {
-    width: 100%;
-    height: 100%;
-    font-family: btMono;
-    font-size: 120%;
-}
-
-body {
-    width: 100%;
-    padding: 20px;
-}
-
-#checkout {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-#main_wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-#main_container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  width: 50%;
-  height: 750px;
-  border: 2px solid black;
-}
-
-#title {
-  height: 17%;
-  width: 100%;
-  border-bottom: 1px solid black;
-  background-color: black;
-  color: white;
-  font-size: 230%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: btMono;
-  margin-bottom: 20px;
-}
-
-#image_cat {
-  margin-top: 10px;
-  width: 100%;
+.regular-field:hover {
+  transform: scale(1.02);
 }

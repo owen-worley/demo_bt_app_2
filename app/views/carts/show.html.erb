@@ -1,3 +1,37 @@
-<h1><%= @cart.id %></h1>
-<p><%= @cart.amount %></p>
-<%= link_to "<< Back to Carts List", carts_path %>
+<h1><%= @checkout.email %></h1>
+
+<ul id="checkoutData">
+    <li>
+      First Name: <%= @checkout.first_name %>
+    </li>
+    <li>
+      Last Name: <%= @checkout.last_name %>
+    </li>
+    <li>
+      Postal Code: <%= @checkout.postal_code.to_i %>
+    </li>
+    <li>
+      Customer ID: <%= @checkout.customer_id %>
+    </li>
+    <li>
+      <!--Using Money gem to ensure correct formatting for currency amounts-->
+      Amount: <%= Money.from_amount(@checkout.amount, "USD").format %>
+    </li>
+    <li>
+      Card Type: <%= @checkout.card_type %>
+    </li>
+    <li>
+      Transaction ID: <%= @checkout.transaction_id %>
+    </li>
+    <li>
+      Transaction Result: <%= @checkout.transaction_result %>
+    </li>
+    <li>
+      Verification ID: <%= @checkout.verification_id %>
+    </li>
+    <li>
+      Verification Result: <%= @checkout.verification_result %>
+    </li>
+</ul>
+
+<%= link_to "<< Back to Checkouts List", carts_path %>

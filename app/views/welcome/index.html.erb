@@ -1,14 +1,12 @@
 <div id="main_wrapper">
-      <div id="main_container">
+      <div id="welcome_container">
         <div id="title">Ready to Purchase?</div>
         <div id='form_container'>
-          <!--action = end point/destination-->
-          <form action="/carts" id="hosted-fields-form" method="post">
-
+          <form action="/carts" id="cart-form" method="post">
                 <label for='amount'>Select Amount</label><br>
-                <input type='number' name='amount' class='hosted-field' id='amount' required><br>
-<!-- add the word disabled after "Checkout" below to start button disabled-->
-                <input type="submit" value="Check Out" disabled />
+                <input type='number' step ="0.01" name='amount' class='welcome-field' id='amount' required><br>
+                <input type="submit" value="Check Out" id='welcome-submit' disabled />
+                <!--Line below required for Rails forms-->
                 <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
               </form>
 
@@ -20,7 +18,7 @@
 
   var field = document.querySelector('input[type="number"]');
   var submit = document.querySelector('input[type="submit"]');
-  var form = document.querySelector('#hosted-fields-form');
+  var form = document.querySelector('#cart-form');
 
   field.addEventListener("input", () => {
     submit.removeAttribute('disabled');
@@ -31,24 +29,13 @@
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     console.log(event);
-
+    submit.setAttribute('disabled', true);
     if (field.value > 0) {
-      form.submit;
+      form.submit();
     }
     else {
       alert("Hey, I'm trying to make some money here! Please enter a positive amount.")
     }
   });
-
-
-//need an action to enable submit button. "on amount=exists" essentially
-//          submit.removeAttribute('disabled');
-//          document.querySelector('#amount').placeholder = 'Purchase Amount';
-
-//          form.addEventListener('submit', function (event) {
-//            event.preventDefault();
-//            console.log(event);
-
-//              form.submit();
 
 </script>

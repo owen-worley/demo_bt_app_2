@@ -1,3 +1,16 @@
-// Place all the styles related to the checkouts controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+//Note that other styles are inherited from welcome.scss
+
+#text {
+  padding: 35px;
+  line-height: 1.8;
+}
+
+#checkout_container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  height: 350px;
+  border: 2px solid black;
+}

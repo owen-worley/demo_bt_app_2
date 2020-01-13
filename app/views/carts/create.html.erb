@@ -1,8 +1,8 @@
 <div id="main_wrapper">
-      <div id="main_container">
-        <div id="title">Braintree Payments</div>
+      <div id="cart_container">
+        <div id="title">Payment Details</div>
         <div id='form_container'>
-
+          <!--Need to post to the checkouts#create route nested in the directory of the current cart-->
           <form action="/carts/<%= @cart.id %>/checkouts" id="hosted-fields-form" method="post">
                 <label for="card-number">Card Number</label>
                 <div id="card-number" class='hosted-field'></div>
@@ -14,20 +14,24 @@
                 <div id="expiration-date" class='hosted-field'></div>
 
                 <label for="postal_code">Postal Code</label>
-                <input type='number' name='postal_code' id="postal_code" class='hosted-field'><br>
+                <input type='number' name='postal_code' id="postal_code" class='regular-field' required><br>
 
                 <label for='first_name'>First Name</label><br>
-                <input type='text' name='first_name' class='hosted-field' id='first_name'><br>
+                <input type='text' name='first_name' class='regular-field' id='first_name' required><br>
+
+                <label for='last_name'>Last Name</label><br>
+                <input type='text' name='last_name' class='regular-field' id='last_name' required><br>
 
                 <label for='email'>Email</label><br>
-                <input type='email' name='email' class='hosted-field' id='email'><br>
+                <input type='email' name='email' class='regular-field' id='email' required><br>
 
-                <input type="submit" value="Pay" disabled />
+                <input type="submit" value="Pay" id='cart-submit' disabled />
                 <input name='payment_method_nonce' id= 'payment_method_nonce' hidden >
                 <input name='amount' id= 'amount' value="<%= @cart.amount %>" hidden >
                 <input name='cart_id' id= 'cart_id' value="<%= @cart.id %>" hidden >
                 <input name='card_type' id= 'card_type' hidden >
-                <input name='data-collector' id= 'data-collector' hidden >
+                <input name='data_collector' id= 'data_collector' hidden >
+                <!--Line below required for Rails forms-->
                 <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
               </form>
 
@@ -35,16 +39,14 @@
       </div>
   </div>
 
-  <script src="https://js.braintreegateway.com/web/3.56.0/js/client.min.js"></script>
-  <script src="https://js.braintreegateway.com/web/3.56.0/js/hosted-fields.min.js"></script>
-  <script src="https://js.braintreegateway.com/web/3.56.0/js/data-collector.min.js"></script>
-  <script src="https://js.braintreegateway.com/web/3.56.0/js/three-d-secure.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.57.0/js/hosted-fields.min.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.57.0/js/data-collector.min.js"></script>
 
   <script>
 
       var form = document.querySelector('#hosted-fields-form');
       var submit = document.querySelector('input[type="submit"]');
-//      var threeDsecure;
 
       braintree.client.create({
         authorization: '<%= @client_token %>'
@@ -53,37 +55,21 @@
           console.error(clientErr);
           return;
         }
-//        braintree.threeDSecure.create({
-//          client: clientInstance
-//        }, function (threeDSecureErr, threeDSecureInstance) {
-//          if (threeDSecureErr) {
-            // Handle error in 3D Secure component creation
-//            return;
-//          }
-
-//          threeDSecure = threeDSecureInstance;
-//        });
 
         braintree.dataCollector.create({
           client: clientInstance,
           kount: true
         }, function (err, dataCollectorInstance) {
           if (err) {
-            // Handle error in creation of data collector
+            console.error(err);
             return;
           }
-          // At this point, you should access the dataCollectorInstance.deviceData value and provide it
-          // to your server, e.g. by injecting it into your form as a hidden input.
           var deviceData = dataCollectorInstance.deviceData;
           console.log(dataCollectorInstance);
-          document.querySelector('#data-collector').value = deviceData;
+          document.querySelector('#data_collector').value = deviceData;
         });
 
-
         console.log(clientInstance)
-        // This example shows Hosted Fields, but you can also use this
-        // client instance to create additional components here, such as
-        // PayPal or Data Collector.
 
         braintree.hostedFields.create({
           client: clientInstance,
@@ -111,10 +97,6 @@
               selector: '#expiration-date',
               placeholder: '10/2029'
             }
-//            postalCode: {
-//              selector: '#postal-code',
-//              placeholder: 'Zip Code'
-//            }
           }
         }, function (hostedFieldsErr, hostedFieldsInstance) {
           if (hostedFieldsErr) {
@@ -124,46 +106,25 @@
           console.log(hostedFieldsInstance);
           submit.removeAttribute('disabled');
           document.querySelector('#first_name').placeholder = 'First Name';
+          document.querySelector('#last_name').placeholder = 'Last Name';
           document.querySelector('#email').placeholder = 'Email';
           document.querySelector('#postal_code').placeholder = 'Postal Code';
 
           form.addEventListener('submit', function (event) {
             event.preventDefault();
             console.log(event);
+            submit.setAttribute('disabled', true);
             hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
               if (tokenizeErr) {
                 console.error(tokenizeErr);
                 return;
               }
 
-              // If this was a real integration, this is where you would
-              // send the nonce to your server.
               console.log(payload.nonce);
               console.log(payload.details.cardType);
               document.querySelector('#payment_method_nonce').value = payload.nonce;
               document.querySelector('#card_type').value = payload.details.cardType;
               form.submit();
-
-//              var my3DSContainer = document.createElement('div');
-
-//              threeDSecure.verifyCard({
-//                amount: '10.00',
-//                nonce: payload.nonce,
-//                addFrame: function (err, iframe) {
-                  // Set up your UI and add the iframe.
-//                  my3DSContainer.appendChild(iframe);
-//                  document.body.appendChild(my3DSContainer);
-//                },
-//                removeFrame: function () {
-                  // Remove UI that you added in addFrame.
-//                  document.body.removeChild(my3DSContainer);
-//                }
-//              }, function (err, response) {
-//                // Send response.nonce to use in your transaction
-//                console.log(response);
-//                document.querySelector('#payment_method_nonce').value = response.nonce;
-//                form.submit();
-//              });
 
             });
           }, false);

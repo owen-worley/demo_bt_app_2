@@ -1,1 +1,9 @@
-<h1>Transaction Succeeded? <%= @message %></h1>
+<!--Payment confirmation or failure page, depending on outcome.-->
+<div id="main_wrapper">
+    <div id="checkout_container">
+        <div id="title"><%= @title %></div>
+        <!--Note that @link is an empty string if the payment is successful, so the link only shows on the payment failure page-->
+        <div id="text"> <%= @message %><%= link_to @link, welcome_index_path %></div>
+
+    </div>
+</div>

@@ -3,6 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.5'
 
+gem 'money'
+
 gem "braintree", "~> 2.100.0"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.1'
@@ -10,7 +12,7 @@ gem 'rails', '~> 5.2.4', '>= 5.2.4.1'
 group :development, :test do
  gem 'sqlite3'
 end
-
+# Use Postgre as the database for Active Record for production Heroku deployment
 group :production do
   gem 'pg'
 end
